@@ -18,15 +18,15 @@ public class loanService {
         return loanRepo.findAll();
     }
 
-    public Optional<loanEntity> getLoanById(int id) {
-        return loanRepo.findById(id);
+    public Optional<loanEntity> getLoanById(int LoanId) {
+        return loanRepo.findById(LoanId);
     }
 
     public loanEntity saveLoan(loanEntity loan) {
         return loanRepo.save(loan);
     }
 
-    public void deleteLoan(int id) {
-        loanRepo.deleteById(id);
+    public void deleteLoan(int LoanId) {
+        loanRepo.deleteById(LoanId);
     }
 }

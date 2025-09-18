@@ -11,21 +11,21 @@ import java.util.List;
 public class loanController {
     @Autowired
     loanService loanServ;
-    @GetMapping
+    @GetMapping("/allLoans")
     public List<loanEntity> getAllLoans() {
         return loanServ.getAllLoans();
     }
-    @GetMapping("/{id}")
+    @GetMapping("/getLoanId")
     public ResponseEntity<loanEntity> getLoanById(@PathVariable int id) {
         return loanServ.getLoanById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    @PostMapping
+    @PostMapping("/postNewLoan")
     public loanEntity createLoan(@RequestBody loanEntity loan) {
         return loanServ.saveLoan(loan);
     }
-    @PutMapping("/{id}")
+    @PutMapping("/updateLoan")
     public ResponseEntity<loanEntity> updateLoan(@PathVariable int id, @RequestBody loanEntity loanDetails) {
         return loanServ.getLoanById(id)
                 .map(loan -> {
@@ -39,7 +39,7 @@ public class loanController {
                     return ResponseEntity.ok(updatedLoan);
                 }).orElse(ResponseEntity.notFound().build());
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deleteLoan/{LoanId}")
     public ResponseEntity<Void> deleteLoan(@PathVariable int id) {
         if (loanServ.getLoanById(id).isPresent()) {
             loanServ.deleteLoan(id);
