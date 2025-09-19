@@ -1,4 +1,4 @@
-package com.laborada.johnjoseph.campusequipmentsystem;
+package edu.cit.laborada.johnjoseph.campusequipmentloan;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
