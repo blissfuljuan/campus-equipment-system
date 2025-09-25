@@ -3,51 +3,41 @@ package edu.cit.lo.joshuanoel.campusequipmentloan.controller;
 import edu.cit.lo.joshuanoel.campusequipmentloan.entity.loanEntity;
 import edu.cit.lo.joshuanoel.campusequipmentloan.service.loanService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
+
 @RestController
-@RequestMapping("/api/loans")
+@RequestMapping("/loans/api")
 public class loanController {
+
     @Autowired
-    loanService loanServ;
-    @GetMapping("/allLoans")
-    public List<loanEntity> getAllLoans() {
-        return loanServ.getAllLoans();
-    }
-    @GetMapping("/getLoanId")
-    public ResponseEntity<loanEntity> getLoanById(@PathVariable int id) {
-        return loanServ.getLoanById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-    @PostMapping("/postNewLoan")
+    private loanService loanService;
+
+    @PostMapping("/PostNewLoans")
     public loanEntity createLoan(@RequestBody loanEntity loan) {
-        return loanServ.saveLoan(loan);
+        // startDate may be manually set or auto-default
+        return loanService.createLoan(loan);
     }
-    @PutMapping("/updateLoan")
-    public ResponseEntity<loanEntity> updateLoan(@PathVariable int id, @RequestBody loanEntity loanDetails) {
-        return loanServ.getLoanById(id)
-                .map(loan -> {
-                    loan.setEquipment(loanDetails.getEquipment());
-                    loan.setStudent(loanDetails.getStudent());
-                    loan.setStartDate(loanDetails.getStartDate());
-                    loan.setDueDate(loanDetails.getDueDate());
-                    loan.setReturnDate(loanDetails.getReturnDate());
-                    loan.setStatus(loanDetails.getStatus());
-                    loanEntity updatedLoan = loanServ.saveLoan(loan);
-                    return ResponseEntity.ok(updatedLoan);
-                }).orElse(ResponseEntity.notFound().build());
+
+    @GetMapping("/getAllLoan")
+    public List<loanEntity> getAllLoans() {
+        return loanService.getAllLoans();
     }
-    @DeleteMapping("/deleteLoan/{LoanId}")
-    public ResponseEntity<Void> deleteLoan(@PathVariable int id) {
-        if (loanServ.getLoanById(id).isPresent()) {
-            loanServ.deleteLoan(id);
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+    // returnDate is always input manually
+    @PutMapping("/{loanId}/return")
+    public loanEntity returnLoan(@PathVariable int loanId, @RequestParam LocalDate returnDate) {
+        return loanService.returnLoan(loanId, returnDate);
+    }
+
+    @GetMapping("/{loanId}/penalty")
+    public double getPenalty(@PathVariable int loanId) {
+        loanEntity loan = loanService.getAllLoans().stream()
+                .filter(l -> l.getLoanId() == loanId)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Loan not found"));
+        return loan.getPenalty();
     }
 }
-
-

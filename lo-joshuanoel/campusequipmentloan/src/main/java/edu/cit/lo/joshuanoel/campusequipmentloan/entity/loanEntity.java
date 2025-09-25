@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.time.LocalDate;
+
 @Entity
 public class loanEntity {
     @Id
@@ -12,12 +14,17 @@ public class loanEntity {
     private int LoanId;
     private String equipment;
     private String student;
-    private int startDate;
-    private int dueDate;
-    private int returnDate;
+    private LocalDate startDate;
+    private LocalDate dueDate;
+    private LocalDate returnDate;
     private String status;
+    private double penalty;
 
-    public loanEntity(int LoanId, String equipment, String student, int startDate, int dueDate, int returnDate, String status) {
+    public loanEntity(){
+
+    }
+
+    public loanEntity(int LoanId, String equipment, String student, LocalDate startDate, LocalDate dueDate, LocalDate returnDate, String status, double penalty) {
         this.LoanId = LoanId;
         this.equipment = equipment;
         this.student = student;
@@ -25,6 +32,7 @@ public class loanEntity {
         this.dueDate = dueDate;
         this.returnDate = returnDate;
         this.status = status;
+        this.penalty = penalty;
     }
 
     public int getLoanId() {
@@ -39,20 +47,24 @@ public class loanEntity {
         return student;
     }
 
-    public int getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public int getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public int getReturnDate() {
+    public LocalDate getReturnDate() {
         return returnDate;
     }
 
     public String getStatus() {
         return status;
+    }
+
+    public double getPenalty(){
+        return penalty;
     }
 
     public void setLoanId(int LoanId) {
@@ -67,19 +79,23 @@ public class loanEntity {
         this.student = student;
     }
 
-    public void setStartDate(int startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public void setDueDate(int dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
-    public void setReturnDate(int returnDate) {
+    public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setPenalty(double penalty){
+        this.penalty = penalty;
     }
 }
