@@ -39,8 +39,6 @@ public class StudentController {
         }
     }
 
-
-
     @GetMapping
     public ResponseEntity<List<StudentModel>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAll());
