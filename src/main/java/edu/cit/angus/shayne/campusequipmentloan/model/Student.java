@@ -1,53 +1,36 @@
 package edu.cit.angus.shayne.campusequipmentloan.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "students", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "studentNo")
-})
+@Table(name = "students")
 public class Student {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String studentNo;
+    @Column(unique = true, nullable = false)
+    private String studentId;
 
+    @Column(nullable = false)
     private String name;
-    private String email;
 
-    // --- Getters and Setters ---
-    public Long getId() {
-        return id;
-    }
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Student() {}
 
-    public String getStudentNo() {
-        return studentNo;
-    }
+    // Getters & Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setStudentNo(String studentNo) {
-        this.studentNo = studentNo;
-    }
+    public String getStudentId() { return studentId; }
+    public void setStudentId(String studentId) { this.studentId = studentId; }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 }
